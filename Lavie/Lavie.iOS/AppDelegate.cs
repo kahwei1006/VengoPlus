@@ -23,7 +23,7 @@ namespace Lavie.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             ZXing.Net.Mobile.Forms.iOS.Platform.Init(); // ZXing QRCode Scanner
-            UIApplication.SharedApplication.StatusBarHidden = true;
+           
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

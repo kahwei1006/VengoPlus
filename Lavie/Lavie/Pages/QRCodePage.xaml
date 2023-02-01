@@ -16,8 +16,8 @@
         <ResourceDictionary>
 
             <OnPlatform x:Key="Padding_For_ImageButton" x:TypeArguments="Thickness">
-                <On Platform="iOS" Value="0,0,0,0"/>
-                <On Platform="Android" Value="0,0,10,0"/>
+                <On Platform="iOS" Value="0,0,20,20"/>
+                <On Platform="Android" Value="0,20,10,0"/>
                 <On Platform="UWP" Value="2,2,2,2"/>
             </OnPlatform>
 
@@ -71,7 +71,7 @@
                          
                         
                          Grid.Column="0"
-                         HeightRequest="56"
+                         HeightRequest="80"
                          Source="icons8_home_100.png"
                          Clicked="btn_Clicked"/>
 
@@ -80,7 +80,7 @@
                          BackgroundColor="{StaticResource ImageBackgroundColor_For_Button}"  
                          BorderColor="{StaticResource ImageBorderColor_For_Button}"
                          HorizontalOptions="Center"
-                         HeightRequest="56"
+                         HeightRequest="80"
                         
                          Grid.Column="1"
                          Source="icons8_bell_100.png"
@@ -91,7 +91,7 @@
                          BackgroundColor="{StaticResource ImageBackgroundColor_For_Button}"  
                          BorderColor="{StaticResource ImageBorderColor_For_Button}"
                          HorizontalOptions="Center"
-                        HeightRequest="56"
+                        HeightRequest="80"
                         
                          Grid.Column="2"
                          Source="icons8_qr_scan_100.png"
@@ -102,7 +102,7 @@
                          BackgroundColor="{StaticResource ImageBackgroundColor_For_Button}"  
                          BorderColor="{StaticResource ImageBorderColor_For_Button}"
                          HorizontalOptions="Center"
-                         HeightRequest="56"
+                         HeightRequest="80"
                         
                          Grid.Column="3"
                         Source="icons8_settings_100.png"
@@ -113,7 +113,7 @@
                          BackgroundColor="{StaticResource ImageBackgroundColor_For_Button}"  
                          BorderColor="{StaticResource ImageBorderColor_For_Button}"
                          HorizontalOptions="Center"
-                         HeightRequest="56"
+                         HeightRequest="80"
                          
                          Grid.Column="4"
                          Source="icons8_more_100.png"
