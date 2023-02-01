@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lavie.Pages.Page1" 
+             NavigationPage.HasNavigationBar="False"
+    xmlns:lavie="clr-namespace:Lavie.CustomViews">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <OnPlatform x:Key="Padding_For_ImageButton" x:TypeArguments="Thickness">
+                <On Platform="iOS" Value="0,0,0,0"/>
+                <On Platform="Android" Value="0,0,10,0"/>
+                <On Platform="UWP" Value="2,2,2,2"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="BorderWidth_For_Button" x:TypeArguments="x:Double">
+                <On Platform="iOS" Value="0"/>
+                <On Platform="Android" Value="0"/>
+                <On Platform="UWP" Value="0"/>
+            </OnPlatform>
+
+            
+
+            <OnPlatform x:Key="ImageBackgroundColor_For_Button" x:TypeArguments="Color">
+                <On Platform="iOS" Value="White"/>
+                <On Platform="Android" Value="white"/>
+                <On Platform="UWP" Value="#FF3598DB"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="ImageBorderColor_For_Button" x:TypeArguments="Color">
+                <On Platform="iOS" Value="Gray"/>
+                <On Platform="Android" Value="Gray"/>
+                <On Platform="UWP" Value="#FF3598DB"/>
+            </OnPlatform>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+
+
+
+        <Grid>
+            <lavie:LavieWebView 
+            
+        VerticalOptions="Fill"
+        HorizontalOptions="Fill"
+        x:Name="webview"
+        Uri="https://erp.letach.com.sg/portal/vengoplus/home.asp" />
+          
+            
+                <Grid Grid.Row="0"
+                  
+                  VerticalOptions="End"
+                  
+                  BackgroundColor="white">
+
+
+                <ImageButton  BorderWidth="{StaticResource BorderWidth_For_Button}"
+                         Padding="{StaticResource Padding_For_ImageButton}"
+                         BackgroundColor="{StaticResource ImageBackgroundColor_For_Button}"  
+                         BorderColor="{StaticResource ImageBorderColor_For_Button}"
+                         HorizontalOptions="Center"
+                         
+                         
+                        
+                         Grid.Column="0"
+                         HeightRequest="56"
+                         Source="icons8_home_100.png"
+                         Clicked="btn_Clicked"/>
+
+                <ImageButton  BorderWidth="{StaticResource BorderWidth_For_Button}"
+                         Padding="{StaticResource Padding_For_ImageButton}"
+                         BackgroundColor="{StaticResource ImageBackgroundColor_For_Button}"  
+                         BorderColor="{StaticResource ImageBorderColor_For_Button}"
+                         HorizontalOptions="Center"
+                         HeightRequest="56"
+                        
+                         Grid.Column="1"
+                         Source="icons8_bell_100.png"
+                         Clicked="btnNotification_Clicked"/>
+
+                <ImageButton BorderWidth="{StaticResource BorderWidth_For_Button}"
+                         Padding="{StaticResource Padding_For_ImageButton}"
+                         BackgroundColor="{StaticResource ImageBackgroundColor_For_Button}"  
+                         BorderColor="{StaticResource ImageBorderColor_For_Button}"
+                         HorizontalOptions="Center"
+                        HeightRequest="56"
+                        
+                         Grid.Column="2"
+                         Source="icons8_qr_scan_100.png"
+                         Clicked="btnScan_Clicked"/>
+
+                <ImageButton  BorderWidth="{StaticResource BorderWidth_For_Button}"
+                         Padding="{StaticResource Padding_For_ImageButton}"
+                         BackgroundColor="{StaticResource ImageBackgroundColor_For_Button}"  
+                         BorderColor="{StaticResource ImageBorderColor_For_Button}"
+                         HorizontalOptions="Center"
+                         HeightRequest="56"
+                        
+                         Grid.Column="3"
+                        Source="icons8_settings_100.png"
+                         Clicked="btnSetting_Clicked"/>
+
+                <ImageButton  BorderWidth="{StaticResource BorderWidth_For_Button}"
+                         Padding="{StaticResource Padding_For_ImageButton}"
+                         BackgroundColor="{StaticResource ImageBackgroundColor_For_Button}"  
+                         BorderColor="{StaticResource ImageBorderColor_For_Button}"
+                         HorizontalOptions="Center"
+                         HeightRequest="56"
+                         
+                         Grid.Column="4"
+                         Source="icons8_more_100.png"
+                         Clicked="btnMore_Clicked"/>
+
+         
+
+
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

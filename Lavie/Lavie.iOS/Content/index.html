@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Lavie Container</title>
+    <script type="text/javascript">
+
+        // Call Container Alert Function
+        function invokeAlert(data) {
+
+            var mesg = { Id: String(Date.now()), Action: "Get", Obj: "Alert", ParamType: "String", ParamVal: String(data), Callback: "containerCallBack", ErrorMesg: "" };
+
+            try {
+                invokeContainerAction(JSON.stringify(mesg));
+            } catch (err) {
+                alert("Webpage Error: " + err);
+            }
+        }
+
+        // Call Container Take Photo Function
+        function invokeCreatePhoto() {
+
+            var mesg = { Id: String(Date.now()), Action: "Create", Obj: "Photo", ParamType: "", ParamVal: "", Callback: "containerCallBack", ErrorMesg: "" };
+
+            try {
+                invokeContainerAction(JSON.stringify(mesg));
+            } catch (err) {
+                alert("Webpage Error: " + err);
+            }
+        }
+
+        // Call Container Scan QR Code Function
+        function invokeScanQRCode() {
+
+            var mesg = { Id: String(Date.now()), Action: "Get", Obj: "QRCode", ParamType: "", ParamVal: "", Callback: "containerCallBack", ErrorMesg: "" };
+
+            try {
+                invokeContainerAction(JSON.stringify(mesg));
+            } catch (err) {
+                alert("Webpage Error: " + err);
+            }
+        }
+
+        // Call Container Get GPS Function
+        function invokeGetGPS() {
+
+            var mesg = { Id: String(Date.now()), Action: "Get", Obj: "GPS", ParamType: "", ParamVal: "", Callback: "containerCallBack", ErrorMesg: "" };
+
+            try {
+                invokeContainerAction(JSON.stringify(mesg));
+            } catch (err) {
+                alert("Webpage Error: " + err);
+            }
+        }
+
+        // Call Container Write To Local Storage Function
+        function invokeWriteDb(key, data) {
+
+            var localStorage = { Key: String(key), Value: String(data) };
+            var mesg = { Id: String(Date.now()), Action: "Create", Obj: "Database", ParamType: "LocalStorage", ParamVal: JSON.stringify(localStorage), Callback: "containerCallBack", ErrorMesg: "" };
+
+            try {
+                invokeContainerAction(JSON.stringify(mesg));
+            } catch (err) {
+                alert("Webpage Error: " + err);
+            }
+        }
+
+        // Call Container Query Location Storage Function
+        function invokeQueryDb(key) {
+
+            var localStorage = { Key: String(key), Value: "" };
+            var mesg = { Id: String(Date.now()), Action: "Get", Obj: "Database", ParamType: "LocalStorage", ParamVal: JSON.stringify(localStorage), Callback: "containerCallBack", ErrorMesg: "" };
+
+            try {
+                invokeContainerAction(JSON.stringify(mesg));
+            } catch (err) {
+                alert("Webpage Error: " + err);
+            }
+        }
+
+        // Call Container Delete Location Storage Function
+        function invokeDeleteDb(key) {
+
+            var localStorage = { Key: String(key), Value: "" };
+            var mesg = { Id: String(Date.now()), Action: "Delete", Obj: "Database", ParamType: "LocalStorage", ParamVal: JSON.stringify(localStorage), Callback: "containerCallBack", ErrorMesg: "" };
+
+            try {
+                invokeContainerAction(JSON.stringify(mesg));
+            } catch (err) {
+                alert("Webpage Error: " + err);
+            }
+        }
+
+        // Call Container Get UUID Function
+        function invokeGetUUID() {
+
+            var mesg = { Id: String(Date.now()), Action: "Get", Obj: "UUID", ParamType: "", ParamVal: "", Callback: "containerCallBack", ErrorMesg: "" };
+
+            try {
+                invokeContainerAction(JSON.stringify(mesg));
+            } catch (err) {
+                alert("Webpage Error: " + err);
+            }
+        }
+
+        // Call Container Get UUID Function
+        function invokeNewPage() {
+
+            var mesg = { Id: String(Date.now()), Action: "Create", Obj: "Page", ParamType: "Url", ParamVal: "https://www.google.com.sg", Callback: "containerCallBack", ErrorMesg: "" };
+
+            try {
+                invokeContainerAction(JSON.stringify(mesg));
+            } catch (err) {
+                alert("Webpage Error: " + err);
+            }
+        }
+
+        // Call Container Get UUID Function
+        function invokeEncryption() {
+
+            var mesg = { Id: String(Date.now()), Action: "Get", Obj: "Encryption", ParamType: "String", ParamVal: "Sample Text", Callback: "containerCallBack", ErrorMesg: "" };
+
+            try {
+                invokeContainerAction(JSON.stringify(mesg));
+            } catch (err) {
+                alert("Webpage Error: " + err);
+            }
+        }
+
+        // Generic Container Callback Function (Modify Accordingly) - Callback function can be specified explicitly in message to container
+        function containerCallBack(data) {
+
+            try {
+                alert("Client Callback From Container: " + data);
+            } catch (err) {
+                alert("Webpage Error: " + err);
+            }
+        }
+
+    </script>
+    <style>
+
+        .parent {
+            width: 100%;
+            text-align: center;
+        }
+
+        .child {
+            display: inline-block;
+            width: 80%;
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="parent">
+        <div class="child">
+            <h1>Lavie Web Container</h1>
+        </div>
+        <form>
+            <br />
+            <br />
+            <input type="button" value="Show Alert Box" onclick="javascript: invokeAlert('Alert Message');" class="child" />
+            <br />
+            <br />
+            <input type="button" value="Take Photo" onclick="javascript: invokeCreatePhoto();" class="child" />
+            <br />
+            <br />
+            <input type="button" value="Scan QR Code" onclick="javascript: invokeScanQRCode();" class="child" />
+            <br />
+            <br />
+            <input type="button" value="Get GPS" onclick="javascript: invokeGetGPS();" class="child" />
+            <br />
+            <br />
+            <input type="button" value="Write To Db" onclick="javascript: invokeWriteDb('uniqueKey', 'store value');" class="child" />
+            <br />
+            <br />
+            <input type="button" value="Query From Db" onclick="javascript: invokeQueryDb('uniqueKey');" class="child" />
+            <br />
+            <br />
+            <input type="button" value="Delete From Db" onclick="javascript: invokeDeleteDb('uniqueKey');" class="child" />
+            <br />
+            <br />
+            <input type="button" value="Get UUID" onclick="javascript: invokeGetUUID();" class="child" />
+            <br />
+            <br />
+            <input type="button" value="New Page" onclick="javascript: invokeNewPage();" class="child" />
+            <br />
+            <br />
+            <input type="button" value="Encrypt Text" onclick="javascript: invokeEncryption();" class="child" />
+            <br />
+            <br />
+        </form>
+    </div>
+</body>
+</html>

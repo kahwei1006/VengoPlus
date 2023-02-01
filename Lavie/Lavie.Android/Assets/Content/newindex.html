@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .mobile-nav {
+            background: #F1F1F1;
+            position: fixed;
+            bottom: 0;
+            height: 70px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            overflow: hidden;
+        }
+
+        a.bloc-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+            .bloc-icon img {
+                width: 30px;
+            }
+
+ /*       @media screen and (min-width: 600px) {
+            .mobile-nav {
+                display: none;
+            }
+        }*/
+    </style>
+
+
+
+
+<script src="https://kit.fontawesome.com/41b576ebe2.js" crossorigin = "anonymous" ></script>
+    
+    <script>
+             function invokeScanQRCode() {
+
+            var mesg = { Id: String(Date.now()), Action: "Get", Obj: "QRCode", ParamType: "", ParamVal: "", Callback: "containerCallBack", ErrorMesg: ""  };
+
+            try {
+                invokeContainerAction(JSON.stringify(mesg));
+            } catch (err) {
+                alert("Webpage Error: " + err);
+            }
+       }
+//function invokeScanPage() {
+
+//            var mesg = { Id: String(Date.now()), Action: "Create", Obj: "Page", ParamType: "Url", ParamVal: "https://erp.letach.com.sg/portal/vengoplus/scan.asp", Callback: "containerCallBack", ErrorMesg: "" };
+
+//            try {
+//                invokeContainerAction(JSON.stringify(mesg));
+//            } catch (err) {
+//                alert("Webpage Error: " + err);
+//            }
+//        }
+ function invokeHomePage() {
+
+            var mesg = { Id: String(Date.now()), Action: "Create", Obj: "Page", ParamType: "Url", ParamVal: "https://erp.letach.com.sg/portal/vengoplus/home.asp", Callback: "containerCallBack", ErrorMesg: "" };
+
+            try {
+                invokeContainerAction(JSON.stringify(mesg));
+            } catch (err) {
+                alert("Webpage Error: " + err);
+            }
+        }
+
+ function invokeNotificationPage() {
+
+            var mesg = { Id: String(Date.now()), Action: "Create", Obj: "Page", ParamType: "Url", ParamVal: "https://erp.letach.com.sg/portal/vengoplus/notifications.asp", Callback: "containerCallBack", ErrorMesg: "" };
+
+            try {
+                invokeContainerAction(JSON.stringify(mesg));
+            } catch (err) {
+                alert("Webpage Error: " + err);
+            }
+        }
+
+
+ function invokeSettingPage() {
+
+            var mesg = { Id: String(Date.now()), Action: "Create", Obj: "Page", ParamType: "Url", ParamVal: "https://erp.letach.com.sg/portal/vengoplus/settings.asp", Callback: "containerCallBack", ErrorMesg: "" };
+
+            try {
+                invokeContainerAction(JSON.stringify(mesg));
+            } catch (err) {
+                alert("Webpage Error: " + err);
+            }
+        }
+
+    function containerCallBack(data) {
+
+            try {
+                alert("Client Callback From Container: " + data);
+            } catch (err) {
+                alert("Webpage Error: " + err);
+            }
+        }
+    </script>
+  
+</head>
+<body>
+   
+    
+    <nav class="mobile-nav">
+        <a href="#" onclick="javascript: invokeHomePage();" class="bloc-icon fa fa-home fa-xl"> </a>
+        <a href="#" onclick="javascript: invokeScanQRCode();" class=" bloc-icon fa-solid fa-barcode fa-xl"> </a>
+        <a href="#" onclick="javascript: invokeNotificationPage();" class="bloc-icon fa-sharp fa-solid fa-envelope fa-xl"> </a>
+        <a href="#" onclick="javascript: invokeSettingPage();" class="bloc-icon fa-solid fa-gear fa-xl"> </a>
+     
+    </nav>
+</body>
+</html>
