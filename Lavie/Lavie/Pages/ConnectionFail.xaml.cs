@@ -1,5 +1,4 @@
 ﻿using Lavie.Models;
-using Newtonsoft.Json;
 using Plugin.Connectivity;
 using System;
 using System.Collections.Generic;
@@ -13,28 +12,15 @@ using Xamarin.Forms.Xaml;
 namespace Lavie.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class More : ContentPage
+    public partial class ConnectionFail : ContentPage
     {
-        public More(WebViewMessage msg)
+        public ConnectionFail()
         {
-            if (IsConnectionAvailable())
-            {
-                string newURL = "https://erp.letach.com.sg/portal/vengoplus/more.asp?UID=" + msg.ParamVal;
-
-                InitializeComponent();
-                webview.Uri = newURL;
-            }
-            else
-            {
-
-                Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-                {
-                    App.Current.MainPage = new ConnectionFail();
-                });
             
-
-        }
-           
+       
+         InitializeComponent();
+              
+        
         }
         public bool IsConnectionAvailable()
         {
@@ -120,3 +106,4 @@ namespace Lavie.Pages
         }
     }
 }
+  

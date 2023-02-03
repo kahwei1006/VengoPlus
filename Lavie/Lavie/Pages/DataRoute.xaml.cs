@@ -18,6 +18,7 @@ using System.Net.Http;
 using static System.Net.Mime.MediaTypeNames;
 using System.Web;
 using Xamarin.Forms.PlatformConfiguration.WindowsSpecific;
+using Plugin.Connectivity;
 
 namespace Lavie.Pages
 {
@@ -29,14 +30,27 @@ namespace Lavie.Pages
 
 
                InitializeComponent();
-            string newURL = "https://erp.letach.com.sg/portal/vengoplus/home.asp" ;
-            webview.Uri = newURL;
-            //  var  = JsonConvert.DeserializeObject<WebViewMessage>(msg);
-            var msgJson = JsonConvert.SerializeObject(msg);
-            ParseData(msgJson);
-            //invokeContainerAction(JSON.stringify(mesg));
-               // webview.RegisterAction(new Action<string>(ParseData));
+           
+                string newURL = "https://erp.letach.com.sg/portal/vengoplus/home.asp";
+                webview.Uri = newURL;
+                //  var  = JsonConvert.DeserializeObject<WebViewMessage>(msg);
+                var msgJson = JsonConvert.SerializeObject(msg);
+                ParseData(msgJson);
+           
+        
             
+            //invokeContainerAction(JSON.stringify(mesg));
+            // webview.RegisterAction(new Action<string>(ParseData));
+
+        }
+        public bool IsConnectionAvailable()
+        {
+            if (!CrossConnectivity.IsSupported)
+                return false;
+
+            bool isConnected = CrossConnectivity.Current.IsConnected;
+            //return CrossConnectivity.Current.IsConnected;
+            return isConnected;
         }
         private async void btn_Clicked(object sender, EventArgs e)
         {

@@ -1,6 +1,7 @@
 ﻿
 using Lavie.Models;
 using Newtonsoft.Json;
+using Plugin.Connectivity;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using System;
@@ -29,8 +30,16 @@ namespace Lavie.Pages
             try
             {
                 InitializeComponent();
-                webview.On<Android>().SetMixedContentMode(MixedContentHandling.AlwaysAllow);
-                webview.RegisterAction(new Action<string>(ParseData));
+
+                if (IsConnectionAvailable())
+                {
+                    webview.On<Android>().SetMixedContentMode(MixedContentHandling.AlwaysAllow);
+                    webview.RegisterAction(new Action<string>(ParseData));
+                }
+                else
+                {
+                    App.Current.MainPage = new ConnectionFail();
+                }
             }
             catch (Exception ex)
             {
@@ -43,14 +52,30 @@ namespace Lavie.Pages
             try
             {
                 InitializeComponent();
-                webview.Uri = url;
-                webview.On<Android>().SetMixedContentMode(MixedContentHandling.AlwaysAllow);
-                webview.RegisterAction(new Action<string>(ParseData));
+                if (IsConnectionAvailable())
+                {
+                    webview.Uri = url;
+                    webview.On<Android>().SetMixedContentMode(MixedContentHandling.AlwaysAllow);
+                    webview.RegisterAction(new Action<string>(ParseData));
+                }
+                else
+                {
+                    App.Current.MainPage = new ConnectionFail();
+                }
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
+        }
+        public bool IsConnectionAvailable()
+        {
+            if (!CrossConnectivity.IsSupported)
+                return false;
+
+            bool isConnected = CrossConnectivity.Current.IsConnected;
+            //return CrossConnectivity.Current.IsConnected;
+            return isConnected;
         }
         private async void btn_Clicked(object sender, EventArgs e)
         {

@@ -1,4 +1,5 @@
 ﻿using Lavie.Models;
+using Plugin.Connectivity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,20 @@ namespace Lavie.Pages
             try
             {
                 InitializeComponent();
-              //  scanView.Options.DelayBetweenAnalyzingFrames = 5;
-              //  scanView.Options.DelayBetweenContinuousScans = 5;
-                scanView.OnScanResult += scanView_OnScanResult;
+                if (IsConnectionAvailable())
+                {
+                    //  scanView.Options.DelayBetweenAnalyzingFrames = 5;
+                    //  scanView.Options.DelayBetweenContinuousScans = 5;
+                    scanView.OnScanResult += scanView_OnScanResult;
+                }
+                else
+                {
+                    Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                    {
+                        App.Current.MainPage = new ConnectionFail();
+                    });
+                }
+            
             }
             catch (Exception ex)
             {
@@ -48,7 +60,15 @@ namespace Lavie.Pages
             //await Navigation.PushAsync(new DataRoute(mesg));
         }
 
+        public bool IsConnectionAvailable()
+        {
+            if (!CrossConnectivity.IsSupported)
+                return false;
 
+            bool isConnected = CrossConnectivity.Current.IsConnected;
+            //return CrossConnectivity.Current.IsConnected;
+            return isConnected;
+        }
         private async void btn_Clicked(object sender, EventArgs e)
         {
             App.Current.MainPage = new Page1();

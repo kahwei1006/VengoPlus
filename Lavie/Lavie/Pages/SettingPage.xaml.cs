@@ -1,4 +1,5 @@
 ﻿using Lavie.Models;
+using Plugin.Connectivity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,33 @@ namespace Lavie.Pages
     {
         public SettingPage(WebViewMessage msg)
         {
-            string newURL = "https://erp.letach.com.sg/portal/vengoplus/settings.asp?UID=" + msg.ParamVal;
-            // webview.Uri = newURL;
-            // await Navigation.PushAsync(new Main(newURL));
-            //  App.Current.MainPage = new Main(newURL);
-            InitializeComponent();
-            webview.Uri = newURL;
+            if (IsConnectionAvailable())
+            {
+                string newURL = "https://erp.letach.com.sg/portal/vengoplus/settings.asp?UID=" + msg.ParamVal;
+       
+                InitializeComponent();
+                webview.Uri = newURL;
+            }
+            else
+            {
+
+                Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                {
+                    App.Current.MainPage = new ConnectionFail();
+                });
+            
+
+        }
+          
+        }
+        public bool IsConnectionAvailable()
+        {
+            if (!CrossConnectivity.IsSupported)
+                return false;
+
+            bool isConnected = CrossConnectivity.Current.IsConnected;
+            //return CrossConnectivity.Current.IsConnected;
+            return isConnected;
         }
         private async void btn_Clicked(object sender, EventArgs e)
         {

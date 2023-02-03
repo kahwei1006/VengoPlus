@@ -4,22 +4,37 @@
              x:Class="Lavie.Pages.Page1" 
            
              NavigationPage.HasNavigationBar="False"
+             
     xmlns:lavie="clr-namespace:Lavie.CustomViews">
-    
+
     <ContentPage.Resources>
         <ResourceDictionary>
 
             <OnPlatform x:Key="Padding_For_ImageButton" x:TypeArguments="Thickness">
-                <On Platform="iOS" Value="0,0,20,20"/>
+                <On Platform="iOS" Value="0,0,10,10"/>
                 <On Platform="Android" Value="0,0,0,0"/>
                 <On Platform="UWP" Value="2,2,2,2"/>
             </OnPlatform>
 
             <OnPlatform x:Key="HeightRequest" x:TypeArguments="x:Double">
-                <On Platform="iOS" Value="80"/>
+                <On Platform="iOS" Value="70"/>
                 <On Platform="Android" Value="60"/>
                 <On Platform="UWP" Value="0"/>
             </OnPlatform>
+
+            <OnPlatform x:Key="Margin_ImageButton" x:TypeArguments="Thickness">
+                <On Platform="iOS" Value="0,0,0,-5"/>
+                <On Platform="Android" Value="0,0,0,-5"/>
+                <On Platform="UWP" Value="2,2,2,2"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="Margin_Button" x:TypeArguments="Thickness">
+                <On Platform="iOS" Value="0,-20,0,20"/>
+                <On Platform="Android" Value="0,-20,0,10"/>
+                <On Platform="UWP" Value="2,2,2,2"/>
+            </OnPlatform>
+
+
 
             <OnPlatform x:Key="BorderWidth_For_Button" x:TypeArguments="x:Double">
                 <On Platform="iOS" Value="0"/>
@@ -27,7 +42,7 @@
                 <On Platform="UWP" Value="0"/>
             </OnPlatform>
 
-            
+
 
             <OnPlatform x:Key="ImageBackgroundColor_For_Button" x:TypeArguments="Color">
                 <On Platform="iOS" Value="lightgray"/>
@@ -36,8 +51,8 @@
             </OnPlatform>
 
             <OnPlatform x:Key="ImageBorderColor_For_Button" x:TypeArguments="Color">
-                <On Platform="iOS" Value="Gray"/>
-                <On Platform="Android" Value="Gray"/>
+                <On Platform="iOS" Value="lightgray"/>
+                <On Platform="Android" Value="lightgray"/>
                 <On Platform="UWP" Value="#FF3598DB"/>
             </OnPlatform>
 
@@ -54,9 +69,8 @@
         HorizontalOptions="Fill"
         x:Name="webview"
         Uri="https://erp.letach.com.sg/portal/vengoplus/home.asp" />
-          
-            
-                <Grid Grid.Row="0"
+
+            <Grid Grid.Row="0"
                   
                   VerticalOptions="End"
                   
@@ -87,23 +101,27 @@
                          Source="icons8_bell_100.png"
                          Clicked="btnNotification_Clicked"/>
 
-               
+
                 <Frame 
                             VerticalOptions="StartAndExpand" 
                             HorizontalOptions="CenterAndExpand" 
                     Grid.Column="2"
-                            Margin="0,-10,0,0"
+                            Margin="{StaticResource Margin_Button}"
                             Padding="10"
-                            CornerRadius="60"
-                            BackgroundColor="Gray" 
+                            CornerRadius="40"
+                            BackgroundColor="LightGray" 
                            HeightRequest="{StaticResource HeightRequest}"
+                           BorderColor="LightGray"
+                           HasShadow="False"
                     
                             WidthRequest="80">
                     <ImageButton 
                                 VerticalOptions="CenterAndExpand" 
                                 HorizontalOptions="CenterAndExpand"
-                         BackgroundColor="Gray" 
-                        Clicked="btnScan_Clicked"
+                                BackgroundColor="lightGray" 
+                                Clicked="btnScan_Clicked"
+                                HeightRequest="70"
+                                Margin="{StaticResource Margin_ImageButton}"
                                 Source="icons8_qr_scan_100.png"/>
                 </Frame>
 
@@ -129,10 +147,12 @@
                          Source="icons8_more_100.png"
                          Clicked="btnMore_Clicked"/>
 
-         
+
 
 
             </Grid>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
+
+

@@ -10,6 +10,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.Xaml;
+using Plugin.Connectivity;
 
 namespace Lavie.Pages
 {
@@ -18,11 +19,23 @@ namespace Lavie.Pages
     {
         public Page1(string url) : base()
         {
+
             try
             {
                 InitializeComponent();
-                webview.Uri = url;
-                webview.On<Android>().SetMixedContentMode(MixedContentHandling.AlwaysAllow);
+                if (IsConnectionAvailable())
+                {
+                    // download content from external db to device (SQLite db)
+                    webview.Uri = url;
+                    webview.On<Android>().SetMixedContentMode(MixedContentHandling.AlwaysAllow);
+                }
+                else
+                {
+                    DisplayAlert("No internet connection found.", "Application data may not be up to date. Connect to a working network.", "OK");
+                }
+            
+
+              
                // webview.RegisterAction(new Action<string>(ParseData));
             }
             catch (Exception ex)
@@ -32,7 +45,31 @@ namespace Lavie.Pages
         }
         public Page1()
         {
-            InitializeComponent();
+        
+        
+        InitializeComponent();
+            if (IsConnectionAvailable())
+            {
+          
+            }
+            else
+            {
+                Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                {
+                    App.Current.MainPage = new ConnectionFail();
+                });
+                }
+        
+
+    }
+    public bool IsConnectionAvailable()
+        {
+            if (!CrossConnectivity.IsSupported)
+                return false;
+
+            bool isConnected = CrossConnectivity.Current.IsConnected;
+            //return CrossConnectivity.Current.IsConnected;
+            return isConnected;
         }
         private async void btnScan_Clicked(object sender, EventArgs e)
         {
