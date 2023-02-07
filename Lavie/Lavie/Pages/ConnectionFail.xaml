@@ -5,8 +5,21 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Connection Fail, Please Try Again Later"
+                   FontSize="Medium"
                 VerticalOptions="CenterAndExpand" 
+                   
                 HorizontalOptions="CenterAndExpand" />
+
+            <Button    
+                     Text="Retry" 
+                Padding="20"
+                  VerticalOptions="CenterAndExpand" 
+                 HorizontalOptions="CenterAndExpand" 
+                    Clicked="btn_Clicked" />
+
         </StackLayout>
+
+ 
+
     </ContentPage.Content>
 </ContentPage>

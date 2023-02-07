@@ -31,7 +31,10 @@ namespace Lavie.Pages
                 }
                 else
                 {
-                    DisplayAlert("No internet connection found.", "Application data may not be up to date. Connect to a working network.", "OK");
+                    Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                    {
+                        App.Current.MainPage = new ConnectionFail();
+                    });
                 }
             
 
