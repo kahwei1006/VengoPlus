@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace Lavie.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class TestUI : ContentPage
+    public partial class TestNotification : ContentPage
     {
-        public TestUI()
+        public TestNotification()
         {
             InitializeComponent();
         }

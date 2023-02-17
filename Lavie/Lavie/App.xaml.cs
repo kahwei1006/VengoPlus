@@ -6,6 +6,11 @@ using System;
 using System.IO;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Plugin.FirebasePushNotification;
+using SQLitePCL;
+using System.Threading.Tasks;
+
+
 
 namespace Lavie
 {
@@ -29,13 +34,81 @@ namespace Lavie
         {
             InitializeComponent();
             //CrossMedia.Current.Initialize();
+           
             WebViewMessage mesg= new WebViewMessage();
             mesg.Action = "Get";
             mesg.Obj = "QRCode";
+         //   const string TAG = "MyFirebaseIIDService";
 
-           MainPage = new NavigationPage(new DataRoute(mesg));
-           //MainPage = new NavigationPage(new TestUI());
+            //  FirebaseMessaging.getToken();
+
+            //MainPage = new NavigationPage(new TestUI());
+
+            CrossFirebasePushNotification.Current.OnTokenRefresh += (s, p) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"TOKEN : {p.Token}");
+
+                mesg.TID = p.Token;
+
+                
+
+            };
+            
+            MainPage = new NavigationPage(new DataRoute(mesg));
+
+            //   firebase(mesg);
+
+            // MainPage = new TestNotification();
+            // Token event
+            // var FCMtoken = FirebaseMessaging.Instance.GetToken();
+
+            //   var refreshedToken = FirebaseInstanceId.Instance.Token;
+         //   MyFirebaseIIDService.
+
+    //      CrossFirebasePushNotification.Current.GetTokenAsync().Equals( mesg.TID);
+
+         //   mesg.TID = CrossFirebasePushNotification.Current.OnTokenRefresh.
+         
+        
+           
+          
+
+            
         }
+
+   
+
+            async Task<WebViewMessage> firebase(WebViewMessage mesg)
+        {
+            CrossFirebasePushNotification.Current.OnTokenRefresh += (s, p) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"TOKEN : {p.Token}");
+
+                mesg.TID = p.Token;
+
+            };
+            MainPage = new NavigationPage(new DataRoute(mesg));
+            // Push message received event
+            CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
+            {
+
+                System.Diagnostics.Debug.WriteLine("Received");
+
+            };
+            //Push message received event
+            CrossFirebasePushNotification.Current.OnNotificationOpened += (s, p) =>
+            {
+                System.Diagnostics.Debug.WriteLine("Opened");
+                foreach (var data in p.Data)
+                {
+                    System.Diagnostics.Debug.WriteLine($"{data.Key} : {data.Value}");
+                }
+
+            };
+
+            return mesg;
+        }
+
 
         protected override void OnStart()
         {

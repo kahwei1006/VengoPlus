@@ -11,6 +11,7 @@ using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.Xaml;
 using Plugin.Connectivity;
+using Plugin.FirebasePushNotification;
 
 namespace Lavie.Pages
 {
@@ -65,6 +66,8 @@ namespace Lavie.Pages
         
 
     }
+
+
     public bool IsConnectionAvailable()
         {
             if (!CrossConnectivity.IsSupported)
@@ -77,19 +80,40 @@ namespace Lavie.Pages
         private async void btnScan_Clicked(object sender, EventArgs e)
         {
 
-            
-            WebViewMessage mesg= new WebViewMessage();
+
+            WebViewMessage mesg = new WebViewMessage();
+            string tid = "";
+            string uuid = "";
+            var t = await App.Database.GetLocalStorageAsync("UUID");
+            var token = await App.Database.GetLocalStorageAsync("TID");
+            if (t != null && token != null)
+            {
+                uuid = t.Value;
+                tid = token.Value;
+            }
+            else
+            {
+                uuid = Guid.NewGuid().ToString();
+                await App.Database.SaveLocalStorageAsync(new LocalStorage { Key = "UUID", Value = uuid });
+
+                tid = CrossFirebasePushNotification.Current.Token;
+
+                await App.Database.SaveLocalStorageAsync(new LocalStorage { Key = "TID", Value = tid });
+
+            }
+
             mesg.Id = DateTime.Now.ToString();
             mesg.Action = "Get";
             mesg.Obj = "QRCode";
             mesg.ParamType = "";
-            mesg.ParamVal= "";
+            mesg.ParamVal = uuid;
+            mesg.TID = tid;
             mesg.CallBack = "containerCallBack";
             mesg.ErrorMesg = "";
 
             //await Navigation.PushAsync(new DataRoute(mesg));
 
-           App.Current.MainPage = new DataRoute(mesg);
+            App.Current.MainPage = new DataRoute(mesg);
             //await Navigation.PushAsync(new DataRoute(mesg));
         }
 
@@ -105,16 +129,29 @@ namespace Lavie.Pages
         {
 
             WebViewMessage mesg = new WebViewMessage();
-
+            string tid = "";
             string uuid = "";
             var t = await App.Database.GetLocalStorageAsync("UUID");
-            if (t != null)
+            var token = await App.Database.GetLocalStorageAsync("TID");
+            if (t != null && token != null)
             {
                 uuid = t.Value;
+                tid = token.Value;
+            }
+            else
+            {
+                uuid = Guid.NewGuid().ToString();
+                await App.Database.SaveLocalStorageAsync(new LocalStorage { Key = "UUID", Value = uuid });
+
+                tid = CrossFirebasePushNotification.Current.Token;
+
+                await App.Database.SaveLocalStorageAsync(new LocalStorage { Key = "TID", Value = tid });
+
             }
 
             mesg.ParamVal = uuid;
-
+            mesg.TID = tid;
+            //  OnDisappearing();
             App.Current.MainPage = new NotificationPage(mesg);
             //await Navigation.PushAsync(new NotificationPage());
         }
@@ -123,14 +160,26 @@ namespace Lavie.Pages
         private async void btnSetting_Clicked(object sender, EventArgs e)
         {
             WebViewMessage mesg = new WebViewMessage();
-
+            string tid = "";
             string uuid = "";
             var t = await App.Database.GetLocalStorageAsync("UUID");
-            if (t != null)
+            var token = await App.Database.GetLocalStorageAsync("TID");
+            if (t != null && token != null)
             {
                 uuid = t.Value;
+                tid = token.Value;
             }
+            else
+            {
+                uuid = Guid.NewGuid().ToString();
+                await App.Database.SaveLocalStorageAsync(new LocalStorage { Key = "UUID", Value = uuid });
 
+                tid = CrossFirebasePushNotification.Current.Token;
+
+                await App.Database.SaveLocalStorageAsync(new LocalStorage { Key = "TID", Value = tid });
+
+            }
+            mesg.TID = tid;
             mesg.ParamVal = uuid;
 
 
@@ -141,20 +190,33 @@ namespace Lavie.Pages
         {
 
             WebViewMessage mesg = new WebViewMessage();
-
+            string tid = "";
             string uuid = "";
             var t = await App.Database.GetLocalStorageAsync("UUID");
-            if (t != null)
+            var token = await App.Database.GetLocalStorageAsync("TID");
+            if (t != null && token != null)
             {
                 uuid = t.Value;
+                tid = token.Value;
+            }
+            else
+            {
+                uuid = Guid.NewGuid().ToString();
+                await App.Database.SaveLocalStorageAsync(new LocalStorage { Key = "UUID", Value = uuid });
+
+                tid = CrossFirebasePushNotification.Current.Token;
+
+                await App.Database.SaveLocalStorageAsync(new LocalStorage { Key = "TID", Value = tid });
+
             }
 
             mesg.ParamVal = uuid;
-
+            mesg.TID = tid;
 
             App.Current.MainPage = new More(mesg);
             // await Navigation.PushAsync(new SettingPage());
         }
+       
         protected void SendCallBack(WebViewMessage mesg)
         {
             try

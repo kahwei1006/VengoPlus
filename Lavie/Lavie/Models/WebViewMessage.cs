@@ -16,5 +16,6 @@ namespace Lavie.Models
         public string FullURL { get; set; } = "";
         public string MID { get; set; } = "";
         public string pageRoute { get; set; } = "";
+        public string TID { get; set; } = "";
     }
 }

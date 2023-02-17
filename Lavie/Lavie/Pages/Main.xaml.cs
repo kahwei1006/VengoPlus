@@ -2,6 +2,7 @@
 using Lavie.Models;
 using Newtonsoft.Json;
 using Plugin.Connectivity;
+using Plugin.FirebasePushNotification;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using System;
@@ -261,8 +262,10 @@ namespace Lavie.Pages
                     if (mesg.Action.Trim().ToLower() == "get")
                     {
                         string uuid = "";
+                        string tid = "";
                         var t = await App.Database.GetLocalStorageAsync("UUID");
-                        if (t != null)
+                        var token= await App.Database.GetLocalStorageAsync("TID");
+                        if (t != null &&tid!=null)
                         {
                             uuid = t.Value;
                         }
@@ -270,6 +273,19 @@ namespace Lavie.Pages
                         {
                             uuid = Guid.NewGuid().ToString();
                             await App.Database.SaveLocalStorageAsync(new LocalStorage { Key = "UUID", Value = uuid });
+
+                            CrossFirebasePushNotification.Current.OnTokenRefresh += (s, p) =>
+                            {
+                                System.Diagnostics.Debug.WriteLine($"TOKEN : {p.Token}");
+
+                                tid = p.Token;
+
+
+
+                            };
+
+                            await App.Database.SaveLocalStorageAsync(new LocalStorage { Key = "TID", Value = tid });
+
                         }
 
                         MessagingCenter.Subscribe<QRCodePage, string>(this, "QRCode", (sender, arg) =>

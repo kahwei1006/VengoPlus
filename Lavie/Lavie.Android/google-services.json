@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "72952270850",
+    "project_id": "vengoplus-c75f6",
+    "storage_bucket": "vengoplus-c75f6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:72952270850:android:bc79e8f91b3a25947e171b",
+        "android_client_info": {
+          "package_name": "com.retas.vengoplus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "72952270850-prt2729i79onvnatf0g1ciuqlh8id32n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0KOlmcmykcZq-lQahwN6gSWDEqA1HxXw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "72952270850-prt2729i79onvnatf0g1ciuqlh8id32n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

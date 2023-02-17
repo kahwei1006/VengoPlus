@@ -148,8 +148,7 @@
                          Clicked="btnMore_Clicked"/>
 
 
-
-
+              
             </Grid>
         </Grid>
     </ContentPage.Content>
