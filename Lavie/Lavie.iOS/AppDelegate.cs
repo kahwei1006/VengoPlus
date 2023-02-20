@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Foundation;
+using ObjCRuntime;
+using Plugin.FirebasePushNotification;
 using UIKit;
 
 namespace Lavie.iOS
@@ -23,10 +25,31 @@ namespace Lavie.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             ZXing.Net.Mobile.Forms.iOS.Platform.Init(); // ZXing QRCode Scanner
-           
+            FirebasePushNotificationManager.Initialize(options, true);
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
         }
+
+        public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
+        {
+            FirebasePushNotificationManager.DidRegisterRemoteNotifications(deviceToken);
+        }
+
+        public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
+        {
+            FirebasePushNotificationManager.RemoteNotificationRegistrationFailed(error);
+        }
+
+        public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo,
+            Action<UIBackgroundFetchResult> completionHandler)
+        {
+            FirebasePushNotificationManager.DidReceiveMessage(userInfo);
+
+            System.Console.WriteLine(userInfo);
+            completionHandler(UIBackgroundFetchResult.NewData);
+        }
+
+
     }
 }
