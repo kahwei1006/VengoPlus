@@ -14,6 +14,12 @@ using Firebase.Iid;
 using Android.Nfc;
 using Android.Util;
 using Firebase.Installations;
+using Android.Gms.Common;
+using Android.Support.V4.Content;
+using Android;
+using Android.Support.V4.App;
+using Android.Content;
+using Android.Media;
 
 namespace Lavie.Droid
 {
@@ -24,40 +30,65 @@ namespace Lavie.Droid
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            
+
+
             SetTheme(Resource.Style.MainTheme); // <-- Added
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
-          
-            // MyFirebaseIIDService.OnTokenRefresh();
-            //
-            //var refreshedToken = FirebaseInstanceId.Instance.Token;
-            //  Log.Debug(TAG, "Refreshed token: " + refreshedToken);
-            //   var FCMtoken = FirebaseMessaging.Instance.GetToken() .GetResult(Java.Lang.Class.FromType(typeof(InstallationTokenResult))).ToString();//
-            //  FirebaseMessaging.Instance.GetToken();
+
             base.OnCreate(savedInstanceState);
-      //      var refreshedToken = FirebaseInstanceId.Instance.Token;
-        //    var token = FirebaseMessaging.Instance.GetToken();
-       //     token.ToString();
+
 
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             ZXing.Net.Mobile.Forms.Android.Platform.Init();                 // ZXing QRCode Scanner
             LoadApplication(new App());
-
+            IsPlayServicesAvailable();
             FirebasePushNotificationManager.ProcessIntent(this, Intent);
 
 
         }
- 
+
+
+        public bool IsPlayServicesAvailable()
+        {
+            const string TAG = "MyFirebaseIIDService";
+
+            int resultCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(this);
+            Log.Debug(TAG, "IsPlayServicesAvailable:" + resultCode);
+            if (resultCode != ConnectionResult.Success)
+            {
+
+                if (GoogleApiAvailability.Instance.IsUserResolvableError(resultCode))
+                {
+                    //msgText.Text = GoogleApiAvailability.Instance.GetErrorString(resultCode);
+                }
+
+                else
+                {
+                    // msgText.Text = "This device is not supported";
+                    Finish();
+                }
+                return false;
+            }
+            else
+            {
+                // do whatever if play service is not available
+                //msgText.Text = "Google Play Services is available.";
+                return true;
+            }
+        }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             global::ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions, grantResults); // ZXing QRCode Scanner
+
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
         }
 
 

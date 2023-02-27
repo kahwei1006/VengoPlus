@@ -28,28 +28,16 @@ namespace Lavie.iOS
             FirebasePushNotificationManager.Initialize(options, true);
             LoadApplication(new App());
 
+
+
             return base.FinishedLaunching(app, options);
+
+
         }
 
-        public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
-        {
-            FirebasePushNotificationManager.DidRegisterRemoteNotifications(deviceToken);
-        }
-
-        public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
-        {
-            FirebasePushNotificationManager.RemoteNotificationRegistrationFailed(error);
-        }
-
-        public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo,
-            Action<UIBackgroundFetchResult> completionHandler)
-        {
-            FirebasePushNotificationManager.DidReceiveMessage(userInfo);
-
-            System.Console.WriteLine(userInfo);
-            completionHandler(UIBackgroundFetchResult.NewData);
-        }
 
 
     }
 }
+
+

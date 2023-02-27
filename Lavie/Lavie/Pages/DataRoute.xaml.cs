@@ -264,26 +264,28 @@ namespace Lavie.Pages
                         string tid = "";
                         string uuid = "";
                         var t = await App.Database.GetLocalStorageAsync("UUID");
-                        var token = await App.Database.GetLocalStorageAsync("TID");
-                        if (t != null && token != null)
+                      //  var token = await App.Database.GetLocalStorageAsync("TID");
+                        if (t != null )//&& token != null)
                         {
                             uuid = t.Value;
-                            tid = token.Value;
+                        //    tid = token.Value;
                         }
                         else
                         {
                             uuid = Guid.NewGuid().ToString();
                             await App.Database.SaveLocalStorageAsync(new LocalStorage { Key = "UUID", Value = uuid });
 
-                            tid = CrossFirebasePushNotification.Current.Token;
+                            //tid = CrossFirebasePushNotification.Current.Token;
 
-                            await App.Database.SaveLocalStorageAsync(new LocalStorage { Key = "TID", Value = tid });
+                           // await App.Database.SaveLocalStorageAsync(new LocalStorage { Key = "TID", Value = tid });
 
                         }
 
                         MessagingCenter.Subscribe<QRCodePage, string>(this, "QRCode", (sender, arg) =>
                         {
+
                             MessagingCenter.Unsubscribe<QRCodePage, string>(this, "QRCode");
+                            tid = CrossFirebasePushNotification.Current.Token;
                             mesg.TID = tid;
                             mesg.ParamType = "String";
                             mesg.ParamVal = uuid;

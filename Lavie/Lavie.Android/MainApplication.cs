@@ -2,15 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using AndroidX.Core.App;
+using AndroidX.Core.Graphics.Drawable;
 using Android.App;
 using Android.Content;
+using Android.Gms.Common.Apis;
+using Android.Media;
+using Android.Nfc;
 using Android.OS;
+using Android.Renderscripts;
 using Android.Runtime;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Firebase.Messaging;
+using Lavie.Models;
+using Lavie.Pages;
 using Plugin.CurrentActivity;
 using Plugin.FirebasePushNotification;
+using System.Runtime.Remoting.Contexts;
 
 namespace Lavie.Droid
 {
@@ -23,23 +33,47 @@ namespace Lavie.Droid
     {
         public MainApplication(IntPtr handle, JniHandleOwnership transer) : base(handle, transer)
         {
+
         }
+
+        public void onMessageReceived(RemoteMessage message)
+        {
+            var notification = message.GetNotification();
+            var data = message.Data;
+            string body = "";
+            string title = "";
+            if (data != null && data.ContainsKey("body") && data.ContainsKey("title"))
+            {
+                body = data["body"];
+                title = data["title"];
+            }
+            else if (notification != null)
+            {
+                body = message.GetNotification().Body;
+                title = message.GetNotification().Title;
+            }
+        }
+
 
         public override void OnCreate()
         {
             base.OnCreate();
+
             CrossCurrentActivity.Current.Init(this);
-            //Set the default notification channel for your app when running Android Oreo
-            if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.O)
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
             {
-                //Change for your default notification channel id here
-                FirebasePushNotificationManager.DefaultNotificationChannelId = "vengoplus-c75f6";
+                NotificationChannel channel = new NotificationChannel("VengoDefaultNotification", "VengoDefaultNotification", NotificationImportance.High);
+                channel.EnableVibration(true);
+                NotificationManager manager = (NotificationManager)GetSystemService(NotificationService);
+                manager.CreateNotificationChannel(channel);
 
-                //Change for your default notification channel name here
-                FirebasePushNotificationManager.DefaultNotificationChannelName = "VengoPlus";
-
-                FirebasePushNotificationManager.DefaultNotificationChannelImportance = NotificationImportance.Max;
+                // Set the default notification channel for the app
+                manager.CreateNotificationChannel(channel);
             }
+
+
+
+
 
             //If debug you should reset the token each time.
             //#if DEBUG
@@ -50,32 +84,55 @@ namespace Lavie.Droid
 
             //Handle notification when app is closed here
 
-         
-
-            CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
-            {
 
 
-            };
 
             //// Push message received event
-            CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
-            {
+                CrossFirebasePushNotification.Current.OnNotificationReceived += async(s, p) =>
+                 {
 
-                System.Diagnostics.Debug.WriteLine("Received");
+                     if (p.Data.ContainsKey("title") && p.Data.ContainsKey("body"))
+                     {
+                         string title = p.Data["title"].ToString();
+                         string body = p.Data["body"].ToString();
+                         string url = p.Data.ContainsKey("url") ? p.Data["url"].ToString() : null;
 
-            };
+                         var notification = new NotificationCompat.Builder(this, "VengoDefaultNotification")
+                               .SetSmallIcon(Resource.Drawable.ic_launcher_round)
+                                 .SetContentTitle(title)
+                                 .SetContentText(body)
+                                  .SetAutoCancel(true)
+                                    .Build();
+                         NotificationManagerCompat.From(this).Notify(0, notification);
+
+
+
+                        // NotificationManager notificationManager = GetSystemService(NotificationService) as NotificationManager;
+                        // notificationManager.Notify(0, builder.Build());
+
+
+                         await Xamarin.Forms.Device.InvokeOnMainThreadAsync(async () =>
+                         {
+                             await App.Current.MainPage.Navigation.PushAsync(new Page1());
+                         });
+
+                     }
+
+                 };
+
+           
+
             //Push message received event
             CrossFirebasePushNotification.Current.OnNotificationOpened += (s, p) =>
-            {
-                System.Diagnostics.Debug.WriteLine("Opened");
-                foreach (var data in p.Data)
-                {
-                    System.Diagnostics.Debug.WriteLine($"{data.Key} : {data.Value}");
-                }
+     {
+         System.Diagnostics.Debug.WriteLine("Opened");
+         foreach (var data in p.Data)
+         {
+             System.Diagnostics.Debug.WriteLine($"{data.Key} : {data.Value}");
+         }
 
-                };
+     };
 
-            }
-    }
+ }
+}
 }
