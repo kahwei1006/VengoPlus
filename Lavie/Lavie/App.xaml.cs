@@ -9,8 +9,7 @@ using Xamarin.Forms.Xaml;
 using Plugin.FirebasePushNotification;
 using SQLitePCL;
 using System.Threading.Tasks;
-
-
+using System.Collections.Generic;
 
 namespace Lavie
 {
@@ -34,15 +33,17 @@ namespace Lavie
         {
             InitializeComponent();
             //CrossMedia.Current.Initialize();
-           
-            WebViewMessage mesg= new WebViewMessage();
+
+            WebViewMessage mesg = new WebViewMessage();
             mesg.Action = "Get";
             mesg.Obj = "QRCode";
-         //   const string TAG = "MyFirebaseIIDService";
+            //   const string TAG = "MyFirebaseIIDService";
 
             //  FirebaseMessaging.getToken();
 
             //MainPage = new NavigationPage(new TestUI());
+
+
 
             CrossFirebasePushNotification.Current.OnTokenRefresh += (s, p) =>
             {
@@ -50,11 +51,12 @@ namespace Lavie
 
                 mesg.TID = p.Token;
 
-                
-
             };
-            
-            MainPage = new NavigationPage(new DataRoute(mesg));
+
+
+            MainPage = new NavigationPage(new Page1());
+
+            // MainPage = new NavigationPage(new DataRoute(mesg));
 
             //   firebase(mesg);
 
@@ -63,17 +65,17 @@ namespace Lavie
             // var FCMtoken = FirebaseMessaging.Instance.GetToken();
 
             //   var refreshedToken = FirebaseInstanceId.Instance.Token;
-         //   MyFirebaseIIDService.
+            //   MyFirebaseIIDService.
 
-    //      CrossFirebasePushNotification.Current.GetTokenAsync().Equals( mesg.TID);
+            //      CrossFirebasePushNotification.Current.GetTokenAsync().Equals( mesg.TID);
 
-         //   mesg.TID = CrossFirebasePushNotification.Current.OnTokenRefresh.
-         
-        
-           
-          
+            //   mesg.TID = CrossFirebasePushNotification.Current.OnTokenRefresh.
 
-            
+
+
+
+
+
         }
 
 

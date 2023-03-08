@@ -30,41 +30,24 @@ namespace Lavie.Pages
         public DataRoute(WebViewMessage msg)
         {
 
-            CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
-            {
 
+            // msg.Action = "Get";
+            // msg.Obj = "QRCode";
 
-            };
-
-            //// Push message received event
-            CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
-            {
-
-                System.Diagnostics.Debug.WriteLine("Received");
-
-            };
             //Push message received event
-            CrossFirebasePushNotification.Current.OnNotificationOpened += (s, p) =>
-            {
-                System.Diagnostics.Debug.WriteLine("Opened");
-                foreach (var data in p.Data)
-                {
-                    System.Diagnostics.Debug.WriteLine($"{data.Key} : {data.Value}");
-                }
 
-            };
 
-      
-        InitializeComponent();
-           
-                string newURL = "https://erp.letach.com.sg/portal/vengoplus/home.asp";
-                webview.Uri = newURL;
-                //  var  = JsonConvert.DeserializeObject<WebViewMessage>(msg);
-                var msgJson = JsonConvert.SerializeObject(msg);
-                ParseData(msgJson);
-           
-        
-            
+
+            InitializeComponent();
+
+            string newURL = "https://erp.letach.com.sg/portal/vengoplus/home.asp";
+            webview.Uri = newURL;
+            //  var  = JsonConvert.DeserializeObject<WebViewMessage>(msg);
+            var msgJson = JsonConvert.SerializeObject(msg);
+            ParseData(msgJson);
+
+
+
             //invokeContainerAction(JSON.stringify(mesg));
             // webview.RegisterAction(new Action<string>(ParseData));
 
@@ -109,12 +92,12 @@ namespace Lavie.Pages
 
             }
 
-            mesg.ParamVal= uuid;
+            mesg.ParamVal = uuid;
             mesg.TID = tid;
-         //   mesg.pageRoute = "NotificationPage";
+            //   mesg.pageRoute = "NotificationPage";
 
-         //   SendCallBack(mesg);
-            
+            //   SendCallBack(mesg);
+
             App.Current.MainPage = new NotificationPage(mesg);
             //await Navigation.PushAsync(new NotificationPage());
         }
@@ -182,7 +165,7 @@ namespace Lavie.Pages
             mesg.TID = tid;
             mesg.ParamVal = uuid;
 
-         
+
             App.Current.MainPage = new SettingPage(mesg);
             // await Navigation.PushAsync(new SettingPage());
         }
@@ -238,17 +221,17 @@ namespace Lavie.Pages
                 DisplayAlert("Container Exception", ex.Message, "OK");
             }
         }
-       
+
         protected void PerformQRCodeAction(WebViewMessage mesg)
         {
-      
-      //      System.Diagnostics.Debug.WriteLine($"TOKEN : {mesg.TID}");
+
+            //      System.Diagnostics.Debug.WriteLine($"TOKEN : {mesg.TID}");
 
             try
             {
                 Device.BeginInvokeOnMainThread(async () =>
                 {
-                    
+
                     //Push message received event
                     CrossFirebasePushNotification.Current.OnNotificationOpened += (s, p) =>
                     {
@@ -264,11 +247,11 @@ namespace Lavie.Pages
                         string tid = "";
                         string uuid = "";
                         var t = await App.Database.GetLocalStorageAsync("UUID");
-                      //  var token = await App.Database.GetLocalStorageAsync("TID");
-                        if (t != null )//&& token != null)
+                        //  var token = await App.Database.GetLocalStorageAsync("TID");
+                        if (t != null)//&& token != null)
                         {
                             uuid = t.Value;
-                        //    tid = token.Value;
+                            //    tid = token.Value;
                         }
                         else
                         {
@@ -277,7 +260,7 @@ namespace Lavie.Pages
 
                             //tid = CrossFirebasePushNotification.Current.Token;
 
-                           // await App.Database.SaveLocalStorageAsync(new LocalStorage { Key = "TID", Value = tid });
+                            // await App.Database.SaveLocalStorageAsync(new LocalStorage { Key = "TID", Value = tid });
 
                         }
 
@@ -291,25 +274,26 @@ namespace Lavie.Pages
                             mesg.ParamVal = uuid;
                             mesg.MID = arg;
                             mesg.ErrorMesg = (arg != "") ? "OK" : "Failed To Scan QR Code";
-                            string urlSend = "https://erp.letach.com.sg/portal/vengoplus/scan.asp?UID=" + mesg.ParamVal + "&MID=" + mesg.MID +"&tid=" + mesg.TID;
-                           
+                            string urlSend = "https://erp.letach.com.sg/portal/vengoplus/scan.asp?UID=" + System.Net.WebUtility.UrlEncode(mesg.ParamVal) + "&MID=" + System.Net.WebUtility.UrlEncode(mesg.MID) + "&tid=" + System.Net.WebUtility.UrlEncode(mesg.TID);
+                            //  string  = System.Net.WebUtility.UrlEncode(encodedUrl);
+
                             // string url = HttpUtility.UrlEncode(urlSend);
 
                             mesg.FullURL = urlSend;
 
-                           // if (mesg.MID != "")
-                           // {
-                               SendCallBack(mesg);
-                         //   }
+                            // if (mesg.MID != "")
+                            // {
+                            SendCallBack(mesg);
+                            //   }
 
-                            
+
                         });
                         //App.Current.MainPage = new QRCodePage();
-                       
-                            await Navigation.PushModalAsync(new QRCodePage());
-                       
-                     
-                            
+
+                        await Navigation.PushModalAsync(new QRCodePage());
+
+
+
                     }
                     else
                     {
@@ -323,7 +307,7 @@ namespace Lavie.Pages
             }
         }
 
-      
+
 
         protected void SendCallBack(WebViewMessage mesg)
         {
@@ -336,32 +320,32 @@ namespace Lavie.Pages
                     //        await webview.EvaluateJavaScriptAsync($"{mesg.CallBack}('{JsonConvert.SerializeObject(mesg)}');");
                     //    }
                     //});
-                   
-                    if(mesg.MID != "")
+
+                    if (mesg.MID != "")
                     {
                         App.Current.MainPage = new Main(mesg.FullURL);
                     }
 
-                
+
                     else
                     {
                         // App.Current.MainPage = new Main((mesg.FullURL));
                         // App.Current.MainPage = new Main((mesg.FullURL));
-                 
-                       
-                            mesg.Obj = "";
-                            mesg.ParamType = "";
-                            mesg.ParamVal = "";
-                            mesg.FullURL = "";
-                            mesg.Action = "";
-                            mesg.ErrorMesg = "";
-                       
-
-                     
 
 
-                       // this.Navigation.PopAsync();
-                       // this.Navigation.PopToRootAsync();
+                        mesg.Obj = "";
+                        mesg.ParamType = "";
+                        mesg.ParamVal = "";
+                        mesg.FullURL = "";
+                        mesg.Action = "";
+                        mesg.ErrorMesg = "";
+
+
+
+
+
+                        // this.Navigation.PopAsync();
+                        // this.Navigation.PopToRootAsync();
 
                         // App.Current.MainPage = new Page1();
                         // SendExceptionMessage(mesg, new Exception("Invalid Action"));
@@ -387,7 +371,7 @@ namespace Lavie.Pages
                     if (!string.IsNullOrEmpty(mesg.CallBack))
                     {
                         mesg.ErrorMesg = e.Message;
-                       // await webview.EvaluateJavaScriptAsync($"{mesg.CallBack}('{JsonConvert.SerializeObject(mesg)}');");
+                        // await webview.EvaluateJavaScriptAsync($"{mesg.CallBack}('{JsonConvert.SerializeObject(mesg)}');");
                     }
                     else
                     {

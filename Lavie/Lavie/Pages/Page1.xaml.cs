@@ -37,10 +37,10 @@ namespace Lavie.Pages
                         App.Current.MainPage = new ConnectionFail();
                     });
                 }
-            
 
-              
-               // webview.RegisterAction(new Action<string>(ParseData));
+
+
+                // webview.RegisterAction(new Action<string>(ParseData));
             }
             catch (Exception ex)
             {
@@ -49,12 +49,12 @@ namespace Lavie.Pages
         }
         public Page1()
         {
-        
-        
-        InitializeComponent();
+
+
+            InitializeComponent();
             if (IsConnectionAvailable())
             {
-          
+
             }
             else
             {
@@ -62,13 +62,36 @@ namespace Lavie.Pages
                 {
                     App.Current.MainPage = new ConnectionFail();
                 });
+            }
+
+            CrossFirebasePushNotification.Current.OnNotificationOpened += async (s, p) =>
+            {
+
+                System.Diagnostics.Debug.WriteLine("Opened");
+                foreach (var data in p.Data)
+                {
+                    System.Diagnostics.Debug.WriteLine($"{data.Key} : {data.Value}");
+                    // IsNotification = true;
+
+                    //onclick notification redirect
+                    WebViewMessage mesg = new WebViewMessage();
+
+                    string uuid = "";
+                    var t = await App.Database.GetLocalStorageAsync("UUID");
+                    var token = await App.Database.GetLocalStorageAsync("TID");
+                    mesg.ParamVal = t.Value;
+                    mesg.MID = token.Value;
+
+                    App.Current.MainPage = new NotificationPage(mesg);
+                    // App.Current.MainPage = new Page1();
+                    // LoadApplication(new App(IsNotification, NotificationData));
                 }
-        
 
-    }
+            };
+        }
 
 
-    public bool IsConnectionAvailable()
+        public bool IsConnectionAvailable()
         {
             if (!CrossConnectivity.IsSupported)
                 return false;
@@ -117,7 +140,7 @@ namespace Lavie.Pages
             //await Navigation.PushAsync(new DataRoute(mesg));
         }
 
-        
+
         private async void btn_Clicked(object sender, EventArgs e)
         {
             App.Current.MainPage = new Page1();
@@ -156,7 +179,7 @@ namespace Lavie.Pages
             //await Navigation.PushAsync(new NotificationPage());
         }
 
-       
+
         private async void btnSetting_Clicked(object sender, EventArgs e)
         {
             WebViewMessage mesg = new WebViewMessage();
@@ -216,7 +239,7 @@ namespace Lavie.Pages
             App.Current.MainPage = new More(mesg);
             // await Navigation.PushAsync(new SettingPage());
         }
-       
+
         protected void SendCallBack(WebViewMessage mesg)
         {
             try

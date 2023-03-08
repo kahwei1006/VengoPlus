@@ -21,16 +21,19 @@ using Lavie.Pages;
 using Plugin.CurrentActivity;
 using Plugin.FirebasePushNotification;
 using System.Runtime.Remoting.Contexts;
+using static Firebase.Messaging.RemoteMessage;
+using Java.Util;
 
 namespace Lavie.Droid
 {
 #if DEBUG
     [Application(Debuggable = true)]
 #else
-	[Application(Debuggable = false)]
+    [Application(Debuggable = false)]
 #endif
     public class MainApplication : Application
     {
+
         public MainApplication(IntPtr handle, JniHandleOwnership transer) : base(handle, transer)
         {
 
@@ -53,8 +56,8 @@ namespace Lavie.Droid
                 title = message.GetNotification().Title;
             }
         }
-
-
+        //    private bool IsNotification = false;
+        //    private IDictionary<string, object> NotificationData;
         public override void OnCreate()
         {
             base.OnCreate();
@@ -88,51 +91,67 @@ namespace Lavie.Droid
 
 
             //// Push message received event
-                CrossFirebasePushNotification.Current.OnNotificationReceived += async(s, p) =>
-                 {
+            CrossFirebasePushNotification.Current.OnNotificationReceived += async (s, p) =>
+            {
 
-                     if (p.Data.ContainsKey("title") && p.Data.ContainsKey("body"))
-                     {
-                         string title = p.Data["title"].ToString();
-                         string body = p.Data["body"].ToString();
-                         string url = p.Data.ContainsKey("url") ? p.Data["url"].ToString() : null;
+                if (p.Data.ContainsKey("title") && p.Data.ContainsKey("body"))
+                {
+                    string title = p.Data["title"].ToString();
+                    string body = p.Data["body"].ToString();
+                    //string url = p.Data.ContainsKey("url") ? p.Data["url"].ToString() : null;
 
-                         var notification = new NotificationCompat.Builder(this, "VengoDefaultNotification")
-                               .SetSmallIcon(Resource.Drawable.ic_launcher_round)
-                                 .SetContentTitle(title)
-                                 .SetContentText(body)
-                                  .SetAutoCancel(true)
-                                    .Build();
-                         NotificationManagerCompat.From(this).Notify(0, notification);
-
-
-
-                        // NotificationManager notificationManager = GetSystemService(NotificationService) as NotificationManager;
-                        // notificationManager.Notify(0, builder.Build());
+                    var notification = new NotificationCompat.Builder(this, "VengoDefaultNotification")
+                          .SetSmallIcon(Resource.Drawable.ic_launcher_round)
+                            .SetContentTitle(title)
+                            .SetContentText(body)
+                             .SetAutoCancel(true)
+                               .Build();
+                    NotificationManagerCompat.From(this).Notify(0, notification);
 
 
-                         await Xamarin.Forms.Device.InvokeOnMainThreadAsync(async () =>
-                         {
-                             await App.Current.MainPage.Navigation.PushAsync(new Page1());
-                         });
 
-                     }
+                    // NotificationManager notificationManager = GetSystemService(NotificationService) as NotificationManager;
+                    // notificationManager.Notify(0, builder.Build());
 
-                 };
 
-           
+                    //    await Xamarin.Forms.Device.InvokeOnMainThreadAsync(async () =>
+                    //   {
+                    //        await App.Current.MainPage.Navigation.PushAsync(new Page1());
+                    //    });
+
+                }
+
+            };
+
+
+
 
             //Push message received event
-            CrossFirebasePushNotification.Current.OnNotificationOpened += (s, p) =>
-     {
-         System.Diagnostics.Debug.WriteLine("Opened");
-         foreach (var data in p.Data)
-         {
-             System.Diagnostics.Debug.WriteLine($"{data.Key} : {data.Value}");
-         }
+            CrossFirebasePushNotification.Current.OnNotificationOpened += async (s, p) =>
+            {
 
-     };
+                System.Diagnostics.Debug.WriteLine("Opened");
+                foreach (var data in p.Data)
+                {
+                    System.Diagnostics.Debug.WriteLine($"{data.Key} : {data.Value}");
+                    // IsNotification = true;
 
- }
-}
+                    //onclick notification redirect
+                    WebViewMessage mesg = new WebViewMessage();
+
+                    // string uuid = "";
+                    var t = await App.Database.GetLocalStorageAsync("UUID");
+                    var token = await App.Database.GetLocalStorageAsync("TID");
+                    mesg.ParamVal = t.Value;
+                    mesg.MID = token.Value;
+
+                    App.Current.MainPage = new NotificationPage(mesg);
+                    // App.Current.MainPage = new Page1();
+                    // LoadApplication(new App(IsNotification, NotificationData));
+                }
+
+            };
+
+        }
+    }
 }

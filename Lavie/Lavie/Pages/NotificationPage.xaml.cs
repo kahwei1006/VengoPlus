@@ -21,9 +21,7 @@ namespace Lavie.Pages
         {
             if (IsConnectionAvailable())
             {
-                string newURL = "https://erp.letach.com.sg/portal/vengoplus/notifications.asp?UID=" + msg.ParamVal + "&tid=" + msg.TID;
-
-
+                string newURL = "https://erp.letach.com.sg/portal/vengoplus/notifications.asp?UID=" + System.Net.WebUtility.UrlEncode(msg.ParamVal) + "&tid=" + System.Net.WebUtility.UrlEncode(msg.TID);
                 InitializeComponent();
                 webview.Uri = newURL;
             }
