@@ -290,7 +290,7 @@ namespace Lavie.Pages
                         });
                         //App.Current.MainPage = new QRCodePage();
 
-                        await Navigation.PushModalAsync(new QRCodePage());
+                   //     await Navigation.PushModalAsync(new QRCodePage());
 
 
 

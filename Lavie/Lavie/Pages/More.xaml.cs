@@ -117,7 +117,7 @@ namespace Lavie.Pages
 
             //await Navigation.PushAsync(new DataRoute(mesg));
 
-            App.Current.MainPage = new DataRoute(mesg);
+            App.Current.MainPage = new QRCodePage(mesg);
             //  await Navigation.PushAsync(new DataRoute(mesg));
         }
         private async void btnSetting_Clicked(object sender, EventArgs e)

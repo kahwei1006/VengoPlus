@@ -299,7 +299,7 @@ namespace Lavie.Pages
                             
                             SendCallBack(mesg);
                         });
-                        await Navigation.PushModalAsync(new QRCodePage());
+                        await Navigation.PushModalAsync(new QRCodePage(mesg));
                     }
                     else
                     {

@@ -175,7 +175,7 @@ namespace Lavie.Pages
                             mesg.ErrorMesg = (arg != "") ? "OK" : "Failed To Scan QR Code";
                             SendCallBack(mesg);
                         });
-                        await Navigation.PushModalAsync(new QRCodePage());
+                        await Navigation.PushModalAsync(new QRCodePage(mesg));
                     }
                     else
                     {
